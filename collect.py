@@ -1,4 +1,10 @@
-from selenium import webdriver
+
+''' 60 follows por hora // 150 follows por dia
+
+200 unfollows por hora // 4000 unfollows por dia '''
+
+
+'''from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -84,7 +90,7 @@ try:
 
 finally:
     # Cierra el navegador
-    driver.quit()
+    driver.quit()'''
 
 
 from selenium import webdriver
@@ -125,7 +131,14 @@ try:
         pass
 
     # Recorre la lista de seguidores y los sigue
+    follow_count = 0  # Contador de personas seguidas
+    max_follows = 60  # Máximo de personas a seguir
+
     for user in followers_list:
+        if follow_count >= max_follows:
+            print("Se alcanzó el límite de 60 personas seguidas. Finalizando el programa.")
+            break
+
         try:
             # Navegar al perfil del usuario
             driver.get(f"https://www.instagram.com/{user}/")
@@ -135,7 +148,8 @@ try:
             follow_button = driver.find_element(By.XPATH, "//button[contains(@class, '_acan') and contains(@class, '_acap')]")
             if follow_button:
                 follow_button.click()
-                print(f"Siguiendo a {user}")
+                follow_count += 1
+                print(f"Siguiendo a {user} ({follow_count}/{max_follows})")
                 time.sleep(2)  # Esperar para no hacer las peticiones demasiado rápido
             else:
                 print(f"Ya sigues a {user} o no se puede seguir.")
@@ -144,4 +158,5 @@ try:
 
 finally:
     # Cierra el navegador
-    driver.quit() 
+    driver.quit()
+
